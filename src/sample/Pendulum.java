@@ -11,10 +11,12 @@ public class Pendulum {
     protected float armLength;
     protected float angle;
     protected float angVel;
-    protected float andAcc;
+    protected float angAcc;
     protected float mass;
+    public int id;
 
-    public Pendulum(float x, float y, float length, float angle, float radius, float mass) {
+    public Pendulum(int id, float x, float y, float length, float angle, float radius, float mass) {
+        this.id = id;
         oX = x;
         oY = y;
         this.angle = angle;
@@ -25,20 +27,19 @@ public class Pendulum {
         bY = oY + armLength * (float)Math.cos(angle);
     }
 
-    public void Update() {
+    public void Update(float timeStep) {
         float sin = (float)Math.sin(angle);
         bX = oX + armLength * sin;
         bY = oY + armLength * (float)Math.cos(angle);
 
-        andAcc = -0.01f * sin;
+        angAcc = -0.03f * sin*timeStep;
 
         angle += angVel;
-        angVel += andAcc;
-        angVel *= 0.99f;
+        angVel += angAcc;
     }
 
     public void draw(GraphicsContext gc) {
         gc.strokeLine(oX, oY, bX, bY);
-        gc.fillOval(bX-bobRadius/2,bY-bobRadius/2,bobRadius,bobRadius);
+        gc.fillOval(bX-bobRadius,bY-bobRadius,bobRadius*2,bobRadius*2);
     }
 }
