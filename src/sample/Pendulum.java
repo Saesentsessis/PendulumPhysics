@@ -15,7 +15,7 @@ public class Pendulum {
     protected float mass;
     public int id;
 
-    public Pendulum(int id, float x, float y, float length, float angle, float radius, float mass) {
+    public Pendulum(int id, float x, float y, float length, float angle, float radius, float mass, float angVel) {
         this.id = id;
         oX = x;
         oY = y;
@@ -25,17 +25,18 @@ public class Pendulum {
         this.mass = mass;
         bX = oX + armLength * (float)Math.sin(angle);
         bY = oY + armLength * (float)Math.cos(angle);
+        this.angVel = angVel;
     }
 
     public void Update(float timeStep) {
+        angle += angVel*timeStep;
         float sin = (float)Math.sin(angle);
         bX = oX + armLength * sin;
         bY = oY + armLength * (float)Math.cos(angle);
 
-        angAcc = -0.03f * sin*timeStep;
+        angAcc = -9.8f * sin * timeStep;
 
-        angle += angVel;
-        angVel += angAcc;
+        angVel += angAcc*timeStep;
     }
 
     public void draw(GraphicsContext gc) {
